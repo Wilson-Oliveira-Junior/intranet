@@ -1,0 +1,92 @@
+/* Resetando estilos básicos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #4b0082, #8a2be2); /* Fundo degradê */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo do contêiner de login */
+.login-container {
+    background: #ffffff; /* Fundo branco para o formulário de login */
+    padding: 40px 30px; /* Ajuste no padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombreamento suave */
+    text-align: center;
+    width: 400px; /* Largura do card */
+}
+
+/* Estilo da logo */
+.logo {
+    width: 150px; /* Tamanho da logo */
+    margin-bottom: 20px; /* Espaço entre a logo e o conteúdo */
+}
+
+/* Título do login */
+.login-container h2 {
+    color: #4b0082; /* Cor do título */
+    margin-bottom: 15px; /* Espaço abaixo do título */
+    font-size: 24px; /* Ajuste no tamanho da fonte */
+}
+
+/* Estilo do texto de introdução */
+.login-container p {
+    color: #555; /* Cor do texto de introdução */
+    margin-bottom: 20px; /* Espaço abaixo do texto de introdução */
+    font-size: 14px; /* Tamanho da fonte */
+}
+
+/* Estilo do formulário */
+.form-group {
+    margin-bottom: 20px; /* Espaço entre os campos */
+}
+
+input {
+    width: 100%; /* Largura total do input */
+    padding: 10px; /* Espaçamento interno */
+    border: 1px solid #ccc; /* Borda cinza */
+    border-radius: 5px; /* Bordas arredondadas */
+    font-size: 14px; /* Tamanho da fonte do input */
+}
+
+/* Estilo do botão */
+button {
+    background: #4b0082; /* Cor do botão */
+    color: white; /* Cor do texto do botão */
+    padding: 10px; /* Espaçamento interno */
+    border: none; /* Sem borda */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Cursor de ponteiro */
+    width: 100%; /* Largura total */
+    transition: background 0.3s; /* Transição suave */
+    font-size: 16px; /* Tamanho da fonte do botão */
+}
+
+/* Estilo do botão ao passar o mouse */
+button:hover {
+    background: #8a2be2; /* Cor do botão ao passar o mouse */
+}
+
+/* Estilo do rodapé */
+.footer {
+    margin-top: 20px; /* Espaço acima do rodapé */
+    color: #555; /* Cor do texto no rodapé */
+}
+
+/* Estilo de links */
+a {
+    color: #4b0082; /* Cor dos links */
+    font-size: 14px; /* Tamanho da fonte dos links */
+}
+
+a:hover {
+    text-decoration: underline; /* Sublinhado ao passar o mouse */
+}

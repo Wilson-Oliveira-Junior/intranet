@@ -1,0 +1,86 @@
+.cardash {
+  width: 150px; /* Ajuste conforme necessário */
+  height: 120px; /* Ajuste conforme necessário */
+  margin-left: 20px;
+  margin-right: 35px;
+}
+
+.card-value {
+  font-size: 1.5rem; /* Ajuste o tamanho da fonte do valor */
+}
+
+.card-title, .card-year {
+  font-size: 0.875rem; /* Ajuste o tamanho da fonte dos outros textos */
+}  
+
+.card-tarefa {
+  background-color: #ffffff;
+  border: none;
+  padding: 10px;
+  margin-bottom: 5px;
+  box-shadow: none;
+  display: flex;
+  flex-direction: row; /* Alinhando verticalmente os elementos */
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.card-tarefa h4 {
+  font-size: 16px; /* Reduzindo o tamanho do título */
+  font-weight: bold;
+  color: #333;
+  margin: 5px 10px 5px 0;
+}
+
+.card-tarefa p {
+  font-size: 15px; /* Mantendo o texto dos parágrafos menor */
+  margin: 2px 0; /* Espaço entre os parágrafos */
+  color: #666; /* Cor de destaque suave */
+  margin-left: 18px;
+}
+
+.tempo {
+  font-size: 15px;
+  color: #000000;
+  margin-top: 5px;
+  text-align: left;
+}
+
+/* Alteração de cor ao passar o mouse sobre a tarefa */
+.card-tarefa:hover {
+  background-color: #f1f1f1;
+}
+
+/* Descrição com texto oculto se for muito longa */
+.descricao {
+  flex: 1;
+  font-weight: bold;
+  font-size: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+/* Definindo tamanho do status */
+.status {
+  font-weight: bold;
+  color: #0910f0;
+}
+
+.reabrir-btn {
+  width: 200px;
+  background-color: #0910f0; /* Cor do botão */
+  color: white; /* Cor do texto */
+  border: none; /* Remove borda */
+  padding: 10px 15px; /* Preenchimento do botão */
+  border-radius: 5px; /* Cantos arredondados */
+  cursor: pointer; /* Cursor indicando clicável */
+  margin-left: 10px;
+}
+
+.reabrir-btn:hover {
+  background-color: #0a1cf0; /* Cor ao passar o mouse */
+}  

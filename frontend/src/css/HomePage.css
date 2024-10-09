@@ -1,0 +1,123 @@
+.home-container {
+    display: flex;
+    height: auto; /* Mantém a altura automática para ajustar o conteúdo */
+}
+
+.container {
+    flex: 1; /* Permite que o container ocupe o espaço restante */
+    padding: 20px;
+    background-color: #f8f9fa; /* Fundo claro */
+    overflow-y: auto; /* Adiciona barra de rolagem se necessário */
+    margin: 10px; /* Margens uniformes */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para profundidade */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #333; /* Cor do título para melhor contraste */
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar input {
+    padding: 8px;
+    border: 1px solid #ced4da; /* Borda suave */
+    border-radius: 4px;
+    width: 200px; /* Largura fixa do campo de busca */
+    transition: border-color 0.3s; /* Transição para mudança de foco */
+}
+
+.search-bar input:focus {
+    border-color: #007bff; /* Cor da borda ao focar */
+    outline: none; /* Remove contorno padrão */
+}
+
+.search-bar i {
+    margin-left: 10px;
+    cursor: pointer;
+    color: #007bff; /* Cor do ícone de busca */
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.stat {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(22% - 20px); /* Faz os cards ocuparem 22% da largura com espaçamento */
+    margin: 10px; /* Espaçamento entre os cards */
+}
+
+.card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(30% - 20px); /* Faz os cards ocuparem 30% da largura com espaçamento */
+    overflow: hidden; /* Garante que o conteúdo não saia do card */
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #333; /* Cor do título do card */
+}
+
+.card p {
+    overflow: hidden; /* Garante que o texto não saia do card */
+    text-overflow: ellipsis; /* Adiciona reticências se o texto for muito longo */
+    white-space: normal; /* Permite que o texto quebre em várias linhas */
+    max-height: 4.5em; /* Limita a altura do parágrafo */
+    line-height: 1.5; /* Define a altura da linha para espaçamento */
+}
+
+.contact div {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.profile img {
+    border-radius: 50%; /* Imagem redonda */
+    margin-right: 10px;
+    width: 40px; /* Largura fixa da imagem */
+    height: 40px; /* Altura fixa da imagem */
+}
+
+button {
+    background-color: #007bff; /* Cor do botão */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Transição suave para hover */
+}
+
+button:hover {
+    background-color: #0056b3; /* Cor do botão ao passar o mouse */
+}
