@@ -1,36 +1,36 @@
-# **Project Title**
-## **Introduction**
-This project is a Laravel 10-based intranet system with a React frontend, designed to be responsive and adaptable to various user and company needs.
+# **Modelo de Intranet em Docker**
+## **Introdução**
+Este projeto é um sistema de intranet baseado em Laravel 10 com um frontend em React, projetado para ser responsivo e adaptável a várias necessidades de usuários e empresas.
 
-## **Installation**
+## **Instalação**
 To install and set up this project, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/your-repo-name.git`
-2. Navigate to the project directory: `cd your-repo-name`
-3. Install dependencies: `composer install` (for Laravel) and `npm install` (for React)
-4. Build the project: `npm run build` (for React)
-5. Start the project: `php artisan serve` (for Laravel) and `npm start` (for React)
+1. Clone o repositório: git clone https://github.com/seu-nome-de-usuario/nome-do-seu-repositorio.git
+2. Navegue até o diretório do projeto: cd nome-do-seu-repositorio
+3. Instale as dependências: composer install (para Laravel) e npm install (para React)
+4. Construa o projeto: npm run build (para React)
+5. Inicie o projeto: php artisan serve (para Laravel) e npm start (para React)
 
-## **Usage**
-To use this project, follow these steps:
+## **Uso**
+Para usar este projeto, siga estes passos:
 
-1. Open the project in your favorite code editor.
-2. Modify the source code to fit your needs.
-3. Build the project: `npm run build` (for React)
-4. Start the project: `php artisan serve` (for Laravel) and `npm start` (for React)
-5. Use the project as desired.
+1. Abra o projeto em seu editor de código favorito.
+2. Modifique o código-fonte para atender às suas necessidades.
+3. Construa o projeto: docker compose up -d
+4. Utilize o Docker para iniciar os serviços. (Certifique-se de que o Docker está em execução.)
+5. Use o projeto como desejar.
 
-## **Contributing**
-If you'd like to contribute to this project, please follow these guidelines:
+Contribuindo
+Se você gostaria de contribuir para este projeto, siga estas diretrizes:
 
-1. Fork the repository.
-2. Create a new branch for your changes.
-3. Make your changes.
-4. Write tests to cover your changes.
-5. Run the tests to ensure they pass.
-6. Commit your changes.
-7. Push your changes to your forked repository.
-8. Submit a pull request.
+1. Faça um fork do repositório.
+2. Crie uma nova branch para suas alterações.
+3. Faça suas alterações.
+4. Escreva testes para cobrir suas alterações.
+5. Execute os testes para garantir que passem.
+6. Faça o commit de suas alterações.
+7. Envie suas alterações para seu repositório forkado.
+8. Envie um pull request.
 
-## **License**
-This project is released under the MIT License.
+## **Licença**
+Este projeto é liberado sob a Licença MIT.
