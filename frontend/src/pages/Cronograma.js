@@ -22,6 +22,10 @@ const Cronograma = () => {
   const [followerId, setFollowerId] = useState(null);
   const [users, setUsers] = useState([]);
 
+  // Novos estados para o título da tarefa e descrição
+  const [taskTitle, setTaskTitle] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
+
   useEffect(() => {
     const fetchUserData = async () => {
       const userData = { name: 'Wilson', sobrenome: 'Silva', id: 1 };
@@ -103,13 +107,20 @@ const Cronograma = () => {
 
   const openModal = (task) => {
     setSelectedTask(task);
+    setTaskTitle(task ? task.cliente : ''); // Preenche o título com o cliente se a tarefa for selecionada
+    setTaskDescription(task ? task.descricao : ''); // Preenche a descrição se a tarefa for selecionada
     setModalIsOpen(true);
   };
 
   const closeModal = () => {
     setModalIsOpen(false);
     setSelectedTask(null);
-    resetModalFields(); // Reset fields when closing modal
+    setFiles([]);
+    setReminderDate('');
+    setPriority('');
+    setFollowerId(null);
+    setTaskTitle(''); // Limpa o título ao fechar o modal
+    setTaskDescription(''); // Limpa a descrição ao fechar o modal
   };
 
   const openSecondModal = (modalType) => {
@@ -136,27 +147,25 @@ const Cronograma = () => {
     setFollowerId(e.target.value);
   };
 
-  const resetModalFields = () => {
-    setFiles([]);
-    setReminderDate('');
-    setPriority('');
-    setFollowerId(null);
-  };
-
   const saveTaskDetails = async () => {
-    const taskDetails = {
-      reminderDate,
-      priority,
-      followerId,
-      files,
-      cliente: selectedTask ? selectedTask.cliente : '', // Título da tarefa
-      descricao: '', // Adicionar lógica para pegar a descrição se necessário
+    const newTask = {
+      cliente: taskTitle,
+      descricao: taskDescription,
+      files: files,
+      followerId: followerId,
+      priority: priority,
+      reminderDate: reminderDate,
+      categoria: priority || 'normal',
+      data: reminderDate || new Date().toISOString().slice(0, 10),
     };
 
-    console.log('Tarefa salva com os seguintes detalhes:', taskDetails);
-
-    // Aqui você pode adicionar a lógica para enviar a tarefa para o backend
-    // const response = await axios.post('http://127.0.0.1:8000/tarefas', taskDetails);
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/cronograma', newTask);
+      setCronogramas(prevCronogramas => [...prevCronogramas, response.data]); // Adiciona a nova tarefa ao estado
+      console.log('Tarefa salva com os seguintes detalhes:', newTask);
+    } catch (error) {
+      console.error('Erro ao salvar a tarefa:', error);
+    }
 
     closeModal();
   };
@@ -220,78 +229,57 @@ const Cronograma = () => {
               type="text"
               placeholder="Título da Tarefa (obrigatório)"
               className="modal-input"
+              value={taskTitle} // Vincula o estado
+              onChange={(e) => setTaskTitle(e.target.value)} // Atualiza o estado
               required
             />
 
-            <select className="modal-input" required>
+            <select className="modal-input">
               <option value="">Selecione um usuário ou equipe</option>
-              {users.map(user => (
-                <option key={user.id} value={user.id}>{user.name}</option>
-              ))}
             </select>
 
             <select className="modal-input" required>
               <option value="">Selecione o tipo</option>
-              <option value="normal">Normal</option>
-              <option value="atencao">Atenção</option>
-              <option value="urgente">Urgente</option>
             </select>
 
             <input
               type="text"
               placeholder="Nome do Cliente/Empresa"
               className="modal-input"
+              value={taskDescription} // Vincula o estado
+              onChange={(e) => setTaskDescription(e.target.value)} // Atualiza o estado
             />
 
-            <textarea
-              placeholder="Descrição da tarefa"
-              className="modal-input"
+            <input
+              type="file"
+              onChange={handleFileChange}
+              multiple
             />
 
-            <div className="modal-button-container">
-              <button className="modal-button" onClick={() => openSecondModal('anexar')}>Anexar</button>
-              <button className="modal-button" onClick={() => openSecondModal('data')}>Selecionar Data</button>
-              <button className="modal-button" onClick={() => openSecondModal('seguidor')}>Adicionar Seguidor</button>
-            </div>
-
+            <button onClick={() => openSecondModal('data')} className="modal-button">Selecionar Data</button>
+            <button onClick={() => openSecondModal('seguidor')} className="modal-button">Adicionar Seguidor</button>
             <button onClick={saveTaskDetails} className="modal-button">Salvar</button>
             <button onClick={closeModal} className="modal-button">Fechar</button>
           </div>
         </Modal>
 
         <Modal
-          isOpen={secondModalIsOpen !== false}
+          isOpen={secondModalIsOpen}
           onRequestClose={closeSecondModal}
+          ariaHideApp={false}
+          ariaLabel="Modal Secundário"
           className="ReactModal__Content"
           overlayClassName="ReactModal__Overlay"
         >
           <div style={{ padding: '20px' }}>
-            {secondModalIsOpen === 'anexar' && (
-              <>
-                <h2>Anexar Arquivo</h2>
-                <input
-                  type="file"
-                  multiple
-                  onChange={handleFileChange}
-                />
-                <button onClick={closeSecondModal} className="modal-button">Fechar</button>
-              </>
-            )}
-
             {secondModalIsOpen === 'data' && (
               <>
-                <h2>Selecionar Data</h2>
+                <h2>Selecionar Data de Lembrete</h2>
                 <input
                   type="date"
-                  className="modal-input"
+                  value={reminderDate}
                   onChange={handleReminderDateChange}
                 />
-                <select onChange={handlePriorityChange} className="modal-input">
-                  <option value="">Selecione a prioridade</option>
-                  <option value="alta">Alta</option>
-                  <option value="media">Média</option>
-                  <option value="baixa">Baixa</option>
-                </select>
                 <button onClick={closeSecondModal} className="modal-button">Fechar</button>
               </>
             )}
@@ -299,7 +287,7 @@ const Cronograma = () => {
             {secondModalIsOpen === 'seguidor' && (
               <>
                 <h2>Adicionar Seguidor</h2>
-                <select onChange={handleFollowerChange} className="modal-input">
+                <select onChange={handleFollowerChange}>
                   <option value="">Selecione um seguidor</option>
                   {users.map(user => (
                     <option key={user.id} value={user.id}>{user.name}</option>

@@ -2,21 +2,20 @@
   box-sizing: border-box; /* Garante que o padding e a borda sejam incluídos nas dimensões */
   margin: 0; /* Remove margens padrão */
   padding: 0; /* Remove padding padrão */
-
 }
 
 html, body {
   height: 100%; /* Garante que o corpo ocupe a altura total da tela */
   overflow: hidden; /* Impede rolagem indesejada no body */
-  height: 100%;
+  width: 100%;
 }
 
 .layout-container {
   display: flex; /* Mantém o sidebar e o conteúdo lado a lado */
   height: 100vh; /* A altura total da visualização */
   overflow: hidden; 
-  margin-left: 90px;
-  width:100%;
+  margin-left: 90px; /* Ajusta a margem esquerda */
+  width: calc(100% - 90px); /* Ajusta a largura para não ultrapassar */
 }
 
 .container {
@@ -25,7 +24,7 @@ html, body {
   display: flex; /* Adiciona flex para alinhar o header e o conteúdo */
   flex-direction: column; /* Alinha os elementos em coluna */
   z-index: 1;
-  width: auto;
+  width: 100%; /* Muda para 100% para preencher o espaço disponível */
 }
 
 /* Estilo para dispositivos móveis */
@@ -33,10 +32,12 @@ html, body {
   .layout-container {
     flex-direction: column; /* Para telas menores, muda para coluna */
     height: auto; /* Permite que a altura seja ajustada */
+    margin-left: 0; /* Remove a margem esquerda em telas pequenas */
+    width: 100%; /* Define a largura para 100% */
   }
 
   .container {
-    margin-left: 0; /* Remove a margem esquerda em telas pequenas */
+    width: 100%; /* Garante que o container ocupe toda a largura */
   }
 }
 
@@ -44,11 +45,13 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px; /* Padding para a header */
+  padding: 20px; /* Padding para o header */
 }
 
 .content {
-  flex: 1; /* Permite que o conteúdo ocupe o espaço restante */
   overflow-y: auto; /* Adiciona barra de rolagem vertical se necessário */
   padding: 20px; /* Ajuste conforme necessário */
+  flex: 1; /* Faz o conteúdo ocupar o espaço restante */
+  width: 100%; /* Ajusta a largura para 100% */
+  margin-bottom: 20px; /* Espaçamento inferior */
 }

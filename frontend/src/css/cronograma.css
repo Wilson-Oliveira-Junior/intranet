@@ -1,3 +1,59 @@
+* {
+    box-sizing: border-box; /* Garante que o padding e a borda sejam incluídos nas dimensões */
+    margin: 0; /* Remove margens padrão */
+    padding: 0; /* Remove padding padrão */
+}
+
+html, body {
+    height: 100%; /* Garante que o corpo ocupe a altura total da tela */
+    overflow: hidden; /* Impede rolagem indesejada no body */
+    width: 100%;
+}
+
+.layout-container {
+    display: flex; /* Mantém o sidebar e o conteúdo lado a lado */
+    height: 100vh; /* A altura total da visualização */
+    overflow: hidden; 
+    margin-left: 90px; /* Pode ser ajustado conforme necessário */
+    width: 100%;
+}
+
+.container {
+    flex: 1; /* Permite que o container ocupe o espaço restante */
+    background-color: #f8f9fa; /* Cor de fundo */
+    display: flex; /* Adiciona flex para alinhar o header e o conteúdo */
+    flex-direction: column; /* Alinha os elementos em coluna */
+    z-index: 1;
+    width: 900px; /* Ajustar conforme necessário */
+}
+
+/* Estilo para dispositivos móveis */
+@media (max-width: 768px) {
+    .layout-container {
+        flex-direction: column; /* Para telas menores, muda para coluna */
+        height: auto; /* Permite que a altura seja ajustada */
+    }
+
+    .container {
+        margin-left: 0; /* Remove a margem esquerda em telas pequenas */
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px; /* Padding para o header */
+}
+
+.content {
+    overflow-y: auto;
+    overflow-x: auto; /* Adiciona barra de rolagem vertical se necessário */
+    padding: 20px; /* Ajuste conforme necessário */
+    width: 100%; /* Corrigido para ocupar a largura total */
+    margin-bottom: 20px;
+}
+
 .col {
     width: 100%;
     padding: 20px;
@@ -8,7 +64,6 @@ body {
     padding: 0;
 }
 
-
 .calendar-container {
     display: flex;
     flex-direction: column;
@@ -18,9 +73,8 @@ body {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border: 2px solid rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
-    width: 100%;
-    height: auto;
-    flex-grow: 1;
+    width: 870px; /* Ajustar conforme necessário */
+    flex-grow: 1; /* Permite que o container cresça */
 }
 
 .calendar-container:hover {
@@ -29,24 +83,26 @@ body {
 
 .calendar-week {
     display: flex;
-    flex-wrap: wrap;
-    margin: 5px;
-    border-radius: 8px;
-    align-items: center;
-    flex-direction:calc(100% - 100px)
+    flex-wrap: wrap; /* Permite que os dias se ajustem em várias linhas */
+    margin: 5px -5px; /* Espaço negativo para compensar a margem nos dias */
 }
 
 .calendar-day {
-    flex: 1;
-    padding: 20px;
+    flex: 0 0 calc(14.2857% - 10px); /* Cada dia ocupa aproximadamente 14.3% da largura */
+    margin: 5px; /* Margem entre os dias */
+    padding: 10px; /* Ajustado para compactar */
     background-color: #ffffff;
-    margin: 5px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
+    transition: background-color 0.2s; /* Transição suave ao passar o mouse */
+}
+
+.calendar-day:hover {
+    background-color: #f0f0f0; /* Destaca o dia ao passar o mouse */
 }
 
 .calendar-day.empty {
@@ -54,11 +110,39 @@ body {
     box-shadow: none;
 }
 
+.day-number {
+    font-size: 1.5rem; /* Ajuste o tamanho do número do dia */
+    color: #32315e;
+    font-weight: bold; /* Negrito para destacar o número do dia */
+}
+
+.task {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    padding: 3px; /* Menos padding para compactar */
+    color: white;
+    border-radius: 5px;
+    font-size: 0.7rem; /* Tamanho menor para se ajustar melhor */
+    width: calc(100% - 10px); /* Largura do task */
+    text-align: center; /* Centraliza o texto da tarefa */
+}
+
+.task.normal {
+    background-color: green;
+}
+
+.task.urgente {
+    background-color: red;
+}
 
 .header-container {
     display: flex; 
     align-items: center; 
-    margin-bottom: 20px; 
+    margin-bottom: 10px; /* Menor espaço abaixo do cabeçalho */
+    padding: 10px; /* Adicionando padding para espaçamento */
+    background-color: #f0f0f0; /* Fundo para o cabeçalho */
+    border-radius: 8px; /* Bordas arredondadas no cabeçalho */
 }
 
 .legenda-container {
@@ -103,41 +187,16 @@ body {
     background-color: #ffea00; 
 }
 
-.day-number {
-    font-size: 1.5rem;
-    color: #32315e;
-}
-
-.task {
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-    padding: 5px;
-    color: white;
-    border-radius: 5px;
-    font-size: 0.8rem;
-}
-
-.task.normal {
-    background-color: green;
-}
-
-.task.urgente {
-    background-color: red;
-}
-
-
 .nav-bar {
     position: fixed; /* ou absolute, dependendo do layout desejado */
     top: 0; /* ajuste conforme necessário */
     left: 0; /* ajuste conforme necessário */
-    width: 200px; /* ou qualquer largura desejada */
+    width: 160px; /* Largura reduzida para o menu */
     height: 100%; /* ocupar toda a altura da página */
     background-color: #fff; /* cor de fundo */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* sombra para destaque */
     z-index: 100; /* acima dos outros elementos */
 }
-
 
 .tab-container {
     display: flex;
@@ -147,7 +206,7 @@ body {
     border-radius: 9px;
     margin-bottom: 20px;
     width: auto;
-    flex: 1;
+    height: auto;
 }
 
 .indicator {
@@ -192,7 +251,6 @@ body {
     opacity: 1;
 }
 
-
 .add-task-button {
     width: 150px;
     padding: 10px 20px;
@@ -206,7 +264,6 @@ body {
 .add-task-button:hover {
     background-color: #0056b3;
 }
-
 
 .ReactModal__Overlay {
     z-index: 1000;
@@ -230,8 +287,6 @@ body {
     z-index: 1001;
 }
 
-
-
 .modal-input {
     width: 100%; 
     margin-bottom: 10px; 
@@ -246,7 +301,6 @@ body {
     justify-content: space-between; 
     margin-top: 15px; 
 }
-
 
 .modal-button {
     flex: 1; 
@@ -264,7 +318,6 @@ body {
 .modal-button:hover {
     background-color: #0056b3; 
 }
-
 
 @media (max-width: 768px) {
     .calendar-day {
