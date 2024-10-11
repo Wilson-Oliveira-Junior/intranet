@@ -17,7 +17,7 @@ Route::get('/dashboard-data', function () {
     ]);
 });
 
-// Agrupando as rotas com o middleware 'api'
+// Agrupando as rotas
 Route::middleware('api')->group(function () {
     // Rotas para autenticação
     Route::post('/login', [LoginController::class, 'login']);
@@ -40,12 +40,10 @@ Route::middleware('api')->group(function () {
     Route::delete('/cronograma/{id}', [CronogramaController::class, 'destroy']); // Remover cronograma
 
     // Rotas para tarefas
-
     Route::get('/tarefas', [TarefaController::class, 'index']);
     Route::post('/tarefas', [TarefaController::class, 'store']);
     Route::get('/tarefas/{id}', [TarefaController::class, 'show']);
     Route::put('/tarefas/{id}', [TarefaController::class, 'update']);
     Route::delete('/tarefas/{id}', [TarefaController::class, 'destroy']);
     Route::put('/tarefas/{id}/atualizar-status', [TarefaController::class, 'atualizarStatus']);
-
 });

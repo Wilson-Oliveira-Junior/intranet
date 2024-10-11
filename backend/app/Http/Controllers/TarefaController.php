@@ -14,17 +14,22 @@ class TarefaController extends Controller
         return Tarefa::all();
     }
 
-    // Criar nova tarefa
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'titulo' => 'required|string|max:255',
             'descricao' => 'nullable|string',
-            'status' => 'required|string|in:abertas,em andamento,finalizada',
+            'status' => 'required|string|in:abertas,em andamento,finalizada,backlog', // Adicionado backlog
+            'equipe_id' => 'nullable|integer', // Adicionando o campo para equipe
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
+        }
+
+        // Se não houver equipe definida, define como backlog
+        if (empty($request->equipe_id)) {
+            $request->merge(['status' => 'backlog']);
         }
 
         $tarefa = Tarefa::create($request->all());
