@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import CardTarefa from '../components/CardTarefa';
-import ModalTarefa from '../components/ModalTarefa'; 
+import ModalTarefa from '../components/ModalTarefa';
 import '../css/Tarefas.css';
 
 const Tarefas = () => {
@@ -17,7 +17,7 @@ const Tarefas = () => {
                 site: 'imparpec.com.br',
                 projeto: 'Migração de Servidor',
                 dataCriada: '03/10/2024',
-                status: 'Abertas',
+                status: 'abertas', // Corrigido para 'abertas'
                 detalhes: 'Isso é um teste que não está aparecendo',
                 criadoPor: 'Usuário Teste',
                 tipo: 'Tipo de Tarefa',
@@ -25,6 +25,7 @@ const Tarefas = () => {
                 esforcoTotal: '02:00',
                 totalTrabalhado: '01:00',
                 descricao: 'Isso é a descrição da tarefa que você verá no modal.',
+                comentarios: [], // Adicionado para comentários
             },
             {
                 id: 31384,
@@ -32,7 +33,7 @@ const Tarefas = () => {
                 site: 'imparpec.com.br',
                 projeto: 'Migração de Servidor',
                 dataCriada: '03/10/2024',
-                status: 'Entregues',
+                status: 'entregues', // Corrigido para 'entregues'
                 detalhes: 'Detalhes da tarefa...',
                 criadoPor: 'Usuário Teste 2',
                 tipo: 'Tipo de Tarefa 2',
@@ -40,17 +41,35 @@ const Tarefas = () => {
                 esforcoTotal: '01:00',
                 totalTrabalhado: '00:30',
                 descricao: 'Essa tarefa já foi entregue e você pode reabri-la.',
+                comentarios: [], // Adicionado para comentários
             },
         ]);
     }, []);
 
-    const reabrirTarefa = (tarefaId) => {
-        console.log("Reabrindo tarefa com ID:", tarefaId);
+    const atualizarStatus = (tarefaId, novoStatus, tempoTrabalhado = 0) => {
         setTarefas(prevTarefas =>
             prevTarefas.map(tarefa =>
-                tarefa.id === tarefaId ? { ...tarefa, status: 'Abertas' } : tarefa
+                tarefa.id === tarefaId
+                    ? { ...tarefa, status: novoStatus, totalTrabalhado: tempoTrabalhado }
+                    : tarefa
             )
         );
+    };
+
+    const reabrirTarefa = (tarefaId) => {
+        setTarefas(prevTarefas =>
+            prevTarefas.map(tarefa =>
+                tarefa.id === tarefaId ? { ...tarefa, status: 'abertas', totalTrabalhado: 0 } : tarefa // Reseta o tempo quando reabre
+            )
+        );
+    };
+
+    const handleCardClick = (tarefa) => {
+        if (tarefa.status === 'entregues') {
+            alert('Reabra a tarefa para visualizar os detalhes.');
+        } else {
+            setTarefaSelecionada(tarefa);
+        }
     };
 
     return (
@@ -80,19 +99,18 @@ const Tarefas = () => {
 
                     <h2 className="mt-3">{abaAtiva === 'abertas' ? 'Tarefas Abertas' : 'Tarefas Entregues'}</h2>
                     <div className="row">
-                        {tarefas.map(tarefa => (
-                            <div key={tarefa.id} className="col-md-12 mb-3">
-                                <CardTarefa
-                                    tarefa={tarefa}
-                                    onClick={() => {
-                                        console.log("Card clicado:", tarefa);
-                                        setTarefaSelecionada(tarefa);
-                                    }}
-                                    abaAtiva={abaAtiva}
-                                    onReabrir={reabrirTarefa}
-                                />
-                            </div>
-                        ))}
+                        {tarefas
+                            .filter(tarefa => tarefa.status.toLowerCase() === abaAtiva || (tarefa.status.toLowerCase() === 'em andamento' && abaAtiva === 'abertas'))
+                            .map(tarefa => (
+                                <div key={tarefa.id} className="col-md-12 mb-3">
+                                    <CardTarefa
+                                        tarefa={tarefa}
+                                        onClick={() => handleCardClick(tarefa)}
+                                        abaAtiva={abaAtiva}
+                                        onReabrir={reabrirTarefa}
+                                    />
+                                </div>
+                            ))}
                     </div>
                 </div>
             </div>
@@ -103,6 +121,7 @@ const Tarefas = () => {
                     onClose={() => {
                         setTarefaSelecionada(null);
                     }}
+                    atualizarStatus={atualizarStatus} // Passando a função atualizarStatus
                 />
             )}
         </Layout>

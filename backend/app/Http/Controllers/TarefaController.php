@@ -20,7 +20,7 @@ class TarefaController extends Controller
         $validator = Validator::make($request->all(), [
             'titulo' => 'required|string|max:255',
             'descricao' => 'nullable|string',
-            'status' => 'required|string',
+            'status' => 'required|string|in:abertas,em andamento,finalizada',
         ]);
 
         if ($validator->fails()) {
@@ -38,6 +38,31 @@ class TarefaController extends Controller
         return response()->json($tarefa);
     }
 
+    // Atualizar o status e tempo trabalhado
+    public function atualizarStatus(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|string|in:abertas,em andamento,finalizada',
+            'tempo_trabalhado' => 'nullable|integer', // Tempo em segundos
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $tarefa = Tarefa::findOrFail($id);
+
+        // Se houver tempo trabalhado, adiciona ao total
+        if ($request->has('tempo_trabalhado')) {
+            $tarefa->total_trabalhado += $request->tempo_trabalhado;
+        }
+
+        $tarefa->status = $request->status;
+        $tarefa->save();
+
+        return response()->json(['message' => 'Status e tempo atualizado com sucesso']);
+    }
+
     // Atualizar uma tarefa específica
     public function update(Request $request, $id)
     {
@@ -53,13 +78,4 @@ class TarefaController extends Controller
         $tarefa->delete();
         return response()->json(null, 204);
     }
-
-    // Finalizar uma tarefa
-    public function finalizar($id)
-    {
-        $tarefa = Tarefa::findOrFail($id);
-        $tarefa->update(['status' => 'finalizada']); // Ajuste conforme sua lógica
-        return response()->json($tarefa);
-    }
 }
-

@@ -40,12 +40,12 @@ Route::middleware('api')->group(function () {
     Route::delete('/cronograma/{id}', [CronogramaController::class, 'destroy']); // Remover cronograma
 
     // Rotas para tarefas
-    Route::get('/tarefas', [TarefaController::class, 'index']);
-    Route::post('/tarefas', [TarefaController::class, 'store']); // Criar nova tarefa
-    Route::get('/tarefas/{id}', [TarefaController::class, 'show']); // Visualizar tarefa
-    Route::put('/tarefas/{id}', [TarefaController::class, 'update']); // Atualizar tarefa
-    Route::delete('/tarefas/{id}', [TarefaController::class, 'destroy']); // Remover tarefa
-    Route::post('/tarefas/finalizar/{id}', [TarefaController::class, 'finalizar']); // Finalizar tarefa
 
-    // Adicione mais rotas conforme necessário...
+    Route::get('/tarefas', [TarefaController::class, 'index']);
+    Route::post('/tarefas', [TarefaController::class, 'store']);
+    Route::get('/tarefas/{id}', [TarefaController::class, 'show']);
+    Route::put('/tarefas/{id}', [TarefaController::class, 'update']);
+    Route::delete('/tarefas/{id}', [TarefaController::class, 'destroy']);
+    Route::put('/tarefas/{id}/atualizar-status', [TarefaController::class, 'atualizarStatus']);
+
 });

@@ -18,7 +18,7 @@ body {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border: 2px solid rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
-    width: auto;
+    width: 100%;
     height: auto;
     flex-grow: 1;
 }
@@ -146,6 +146,8 @@ body {
     background-color: #dadadb;
     border-radius: 9px;
     margin-bottom: 20px;
+    width: auto;
+    flex: 1;
 }
 
 .indicator {

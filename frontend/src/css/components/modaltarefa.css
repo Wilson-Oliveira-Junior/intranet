@@ -7,32 +7,40 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal {
     background: white;
     border-radius: 8px;
-    width: 70%;
-    max-width: 600px;
+    padding: 20px;
+    max-width: 800px; /* Increased modal width */
+    width: 90%; /* Responsive width */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
+    animation: fadeIn 0.3s ease-in-out; /* Fade-in effect */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px;
-    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
 }
 
 .header-content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
 }
 
 .user-image {
@@ -40,19 +48,28 @@
     align-items: center;
 }
 
-.user-image .avatar {
+.avatar {
     margin-right: 10px;
 }
 
 .task-title {
-    font-size: 18px;
-    color: black;
+    margin-left: 10px;
+}
+
+.task-title h1 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.task-title h2 {
+    font-size: 1em;
+    margin: 0;
+    color: gray;
 }
 
 .buttons {
-    margin-left: auto;
     display: flex;
-    gap: 10px;
+    gap: 10px; /* Spacing between buttons */
 }
 
 .modal-close {
@@ -60,78 +77,108 @@
     border: none;
     font-size: 20px;
     cursor: pointer;
-    color: #999;
+    width: 100px;
+    margin-left: 10px;
 }
 
-/* Ajuste para o título e subtítulo */
-.title {
-    flex: 1;
-    font-size: 18px;
-    color: black;
-}
-
-.subtitle {
-    font-size: 14px;
-    color: #828282;
-    margin: 0;
-}
-
-/* Informações da tarefa */
 .container {
-    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .task-info {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 10px;
 }
 
-.task-info .left,
-.task-info .right {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* Descrição da tarefa */
-.description {
-    padding: 20px 0;
-}
-
-/* Abas do modal */
 .comments {
     margin-top: 20px;
+    max-height: 300px; /* Set a maximum height for comments */
+    overflow-y: auto; /* Enable vertical scrolling */
 }
 
-.comments .nav-tabs {
-    border-bottom: 1px solid #ddd;
+.comments::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
 }
 
-.comments .nav-link.active {
-    background-color: #6c63ff;
-    color: white;
+.comments::-webkit-scrollbar-thumb {
+    background: #007bff; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Round edges of the scrollbar */
 }
 
-.comments .nav-link {
-    color: #6c63ff;
+.comments::-webkit-scrollbar-thumb:hover {
+    background: #0056b3; /* Darker color on hover */
 }
 
-/* Caixa de comentários */
-.comment-box {
-    padding-top: 20px;
+/* Styling for tabs */
+.nav {
+    display: flex; /* Ensures tabs are side by side */
+    justify-content: flex-start; /* Align tabs to the left */
+    border-bottom: 1px solid #dee2e6; /* Adds a border below the tabs */
 }
 
-.comment-box button {
-    background-color: #6c63ff;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
+.nav-item {
+    margin-right: 15px; /* Spacing between tabs */
 }
 
-.comment-box button:hover {
-    background-color: #5848c2;
+.nav-link {
+    padding: 10px 15px; /* Increases padding within each tab */
+    border: 1px solid transparent; /* Adds a border for hover effect */
+    border-radius: 4px; /* Rounds the corners of the tabs */
+    color: #007bff; /* Default color for tabs */
+    cursor: pointer; /* Changes cursor to indicate it's clickable */
+}
+
+.nav-link:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Background color on hover */
+}
+
+.nav-link.active {
+    font-weight: bold; /* Highlights the active tab */
+    border-bottom: 2px solid #007bff; /* Bottom border for the active tab */
+    background-color: white; /* Background color for the active tab */
+}
+
+/* Additional adjustment for tab content */
+.tab-content {
+    padding: 15px; /* Adds space around tab content */
+    
+}
+
+.textarea-standard {
+    width: 100%; /* Ajusta para 100% da largura do contêiner */
+    height: 100px; /* Altura padrão do textarea */
+    resize: none; /* Desativa o redimensionamento manual */
+    margin-bottom: 10px;
+}
+
+.file-standard{
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.description {
+    margin-bottom: 20px; /* Space between description and next section */
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-3 {
+    margin-top: 1rem !important; /* Increase space between elements */
 }

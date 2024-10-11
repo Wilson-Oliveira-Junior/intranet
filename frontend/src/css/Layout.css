@@ -25,6 +25,7 @@ html, body {
   display: flex; /* Adiciona flex para alinhar o header e o conteúdo */
   flex-direction: column; /* Alinha os elementos em coluna */
   z-index: 1;
+  width: auto;
 }
 
 /* Estilo para dispositivos móveis */

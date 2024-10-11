@@ -109,6 +109,7 @@ const Cronograma = () => {
   const closeModal = () => {
     setModalIsOpen(false);
     setSelectedTask(null);
+    resetModalFields(); // Reset fields when closing modal
   };
 
   const openSecondModal = (modalType) => {
@@ -135,13 +136,28 @@ const Cronograma = () => {
     setFollowerId(e.target.value);
   };
 
-  const saveTaskDetails = () => {
-    console.log('Tarefa salva com os seguintes detalhes:', {
+  const resetModalFields = () => {
+    setFiles([]);
+    setReminderDate('');
+    setPriority('');
+    setFollowerId(null);
+  };
+
+  const saveTaskDetails = async () => {
+    const taskDetails = {
       reminderDate,
       priority,
       followerId,
       files,
-    });
+      cliente: selectedTask ? selectedTask.cliente : '', // Título da tarefa
+      descricao: '', // Adicionar lógica para pegar a descrição se necessário
+    };
+
+    console.log('Tarefa salva com os seguintes detalhes:', taskDetails);
+
+    // Aqui você pode adicionar a lógica para enviar a tarefa para o backend
+    // const response = await axios.post('http://127.0.0.1:8000/tarefas', taskDetails);
+
     closeModal();
   };
 
@@ -207,12 +223,18 @@ const Cronograma = () => {
               required
             />
 
-            <select className="modal-input">
+            <select className="modal-input" required>
               <option value="">Selecione um usuário ou equipe</option>
+              {users.map(user => (
+                <option key={user.id} value={user.id}>{user.name}</option>
+              ))}
             </select>
 
             <select className="modal-input" required>
               <option value="">Selecione o tipo</option>
+              <option value="normal">Normal</option>
+              <option value="atencao">Atenção</option>
+              <option value="urgente">Urgente</option>
             </select>
 
             <input

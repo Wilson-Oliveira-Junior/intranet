@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cronograma;
+use App\Models\Tarefa; // Importando o modelo Tarefa corretamente
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -16,17 +17,25 @@ class CronogramaController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'titulo' => 'required|string',
-            'data' => 'required|date',
-            'categoria' => 'required|string|in:normal,urgente', // Validação para categoria
-            'cliente' => 'required|string' // Validação para o nome do cliente
+        $validator = Validator::make($request->all(), [
+            'titulo' => 'required|string|max:255',
+            'descricao' => 'nullable|string',
+            'status' => 'required|string|in:abertas,em andamento,finalizada',
+            'seguidores' => 'nullable|array',
+            'seguidores.*' => 'exists:users,id',
         ]);
 
-        $cronograma = Cronograma::create($validated);
-        Log::info('Novo cronograma criado', ['cronograma' => $cronograma]);
-        return response()->json($cronograma, 201);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+
+        $tarefaData = $request->all();
+        $tarefaData['seguidores'][] = $request->user()->id;
+        $tarefa = Tarefa::create($tarefaData);
+        return response()->json($tarefa, 201);
     }
+
 
     public function show($id)
     {
