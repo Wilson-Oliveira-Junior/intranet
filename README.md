@@ -5,7 +5,7 @@ Este projeto é um sistema de intranet baseado em Laravel 10 com um frontend em 
 ## **Instalação**
 To install and set up this project, follow these steps:
 
-1. Clone o repositório: git clone [https://github.com/seu-nome-de-usuario/nome-do-seu-repositorio.git](https://github.com/Wilson-Oliveira-Junior/intranet.git)]
+1. Clone o repositório: git clone [clique aqui](https://github.com/Wilson-Oliveira-Junior/intranet.git)]
 2. Navegue até o diretório do projeto: cd nome-do-seu-repositorio
 3. Instale as dependências: composer install (para Laravel) e npm install (para React)
 4. Construa o projeto: npm run build (para React)
