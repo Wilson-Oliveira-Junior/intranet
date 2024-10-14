@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\TarefaController;
 use App\Http\Controllers\GutController;
+use App\Models\Time;
+use App\Models\User;
 
 // Rota para dados do dashboard
 Route::get('/dashboard-data', function () {
@@ -54,13 +56,12 @@ Route::middleware('api')->group(function () {
 
     // Rotas para Times
     Route::get('/times', function () {
-        return App\Models\Time::all(); // Retorna todos os times
+        return Time::all(); // Retorna todos os times
     });
 
     // Rotas para Membros
     Route::get('/members', function (Request $request) {
         $team = $request->query('team');
-        return App\Models\User::where('team', $team)->get();
+        return User::where('team', $team)->get(); // Busca membros pelo time
     });
 });
-

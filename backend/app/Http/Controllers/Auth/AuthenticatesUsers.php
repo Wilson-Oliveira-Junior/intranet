@@ -70,7 +70,19 @@ trait AuthenticatesUsers
     {
         $request->session()->regenerate();
 
-        return response()->json(['message' => 'Login bem-sucedido!']);
+        // Obtém o usuário autenticado
+        $user = Auth::user();
+
+        // Retorna a resposta com informações do usuário
+        return response()->json([
+            'message' => 'Login bem-sucedido!',
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'is_admin' => $user->is_admin // Inclui o campo is_admin
+            ]
+        ]);
     }
 
     /**
