@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\TarefaController;
+use App\Http\Controllers\GutController;
 
 // Rota para dados do dashboard
 Route::get('/dashboard-data', function () {
@@ -27,17 +28,17 @@ Route::middleware('api')->group(function () {
     // Rotas para usuários
     Route::get('/usuarios', [UserController::class, 'index']);
     Route::get('/user-permissions', [UserController::class, 'getPermissions']);
-    Route::post('/usuarios', [UserController::class, 'store']); // Criar novo usuário
-    Route::get('/usuarios/{id}', [UserController::class, 'show']); // Visualizar usuário
-    Route::put('/usuarios/{id}', [UserController::class, 'update']); // Atualizar usuário
-    Route::delete('/usuarios/{id}', [UserController::class, 'destroy']); // Remover usuário
+    Route::post('/usuarios', [UserController::class, 'store']);
+    Route::get('/usuarios/{id}', [UserController::class, 'show']);
+    Route::put('/usuarios/{id}', [UserController::class, 'update']);
+    Route::delete('/usuarios/{id}', [UserController::class, 'destroy']);
 
     // Rotas para cronograma
     Route::get('/cronograma', [CronogramaController::class, 'index']);
-    Route::post('/cronograma', [CronogramaController::class, 'store']); // Criar novo cronograma
-    Route::get('/cronograma/{id}', [CronogramaController::class, 'show']); // Visualizar cronograma
-    Route::put('/cronograma/{id}', [CronogramaController::class, 'update']); // Atualizar cronograma
-    Route::delete('/cronograma/{id}', [CronogramaController::class, 'destroy']); // Remover cronograma
+    Route::post('/cronograma', [CronogramaController::class, 'store']);
+    Route::get('/cronograma/{id}', [CronogramaController::class, 'show']);
+    Route::put('/cronograma/{id}', [CronogramaController::class, 'update']);
+    Route::delete('/cronograma/{id}', [CronogramaController::class, 'destroy']);
 
     // Rotas para tarefas
     Route::get('/tarefas', [TarefaController::class, 'index']);
@@ -46,4 +47,7 @@ Route::middleware('api')->group(function () {
     Route::put('/tarefas/{id}', [TarefaController::class, 'update']);
     Route::delete('/tarefas/{id}', [TarefaController::class, 'destroy']);
     Route::put('/tarefas/{id}/atualizar-status', [TarefaController::class, 'atualizarStatus']);
+
+    // Rotas para GUT
+    Route::get('/GUT', [GutController::class, 'index']);
 });

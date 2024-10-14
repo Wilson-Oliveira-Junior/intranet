@@ -23,11 +23,7 @@ const Sidebar = () => {
         <i className="fas fa-tasks"></i>
         Tarefas
       </a>
-      <a href="#">
-        <i className="fas fa-cogs"></i>
-        Backlog
-      </a>
-      <a href="#">
+      <a href="http://localhost:3000/GUT">
         <i className="fas fa-sort-amount-up"></i>
         GUT - Priorização
       </a>

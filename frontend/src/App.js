@@ -10,9 +10,7 @@ import Register from './pages/Register';
 import Cronograma from './pages/Cronograma';
 import CronogramaUsuarios from './pages/CronogramaUsuarios';
 import Tarefas from './pages/Tarefas';
-
-
-
+import GutPage from './pages/GutPage'; 
 
 const App = () => {
   return (
@@ -27,7 +25,7 @@ const App = () => {
         <Route path="/cronograma" element={<Cronograma />} />
         <Route path="/cronograma-usuarios" element={<CronogramaUsuarios />} /> 
         <Route path="/tarefas" element={<Tarefas />} />
-        {/* Adicione mais rotas conforme necessário */}
+        <Route path="/GUT" element={<GutPage />} /> {/* Certifique-se de que esta rota está definida */}
       </Routes>
     </Router>
   );

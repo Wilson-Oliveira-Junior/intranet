@@ -249,13 +249,8 @@ const Cronograma = () => {
               value={taskDescription} // Vincula o estado
               onChange={(e) => setTaskDescription(e.target.value)} // Atualiza o estado
             />
-
-            <input
-              type="file"
-              onChange={handleFileChange}
-              multiple
-            />
-
+            
+            <button onClick={() => openSecondModal('file')} className='modal-button'>Anexar Arquivo</button>
             <button onClick={() => openSecondModal('data')} className="modal-button">Selecionar Data</button>
             <button onClick={() => openSecondModal('seguidor')} className="modal-button">Adicionar Seguidor</button>
             <button onClick={saveTaskDetails} className="modal-button">Salvar</button>
@@ -272,6 +267,18 @@ const Cronograma = () => {
           overlayClassName="ReactModal__Overlay"
         >
           <div style={{ padding: '20px' }}>
+            {secondModalIsOpen === 'file' && (
+              <>
+                <h2>Selecionar o Arquivo para anexar</h2>
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  multiple
+                />
+                <button onClick={closeSecondModal} className="modal-button">Fechar</button>
+              </>
+            )}
+
             {secondModalIsOpen === 'data' && (
               <>
                 <h2>Selecionar Data de Lembrete</h2>
@@ -296,8 +303,9 @@ const Cronograma = () => {
                 <button onClick={closeSecondModal} className="modal-button">Fechar</button>
               </>
             )}
-          </div>
+          </div> 
         </Modal>
+
       </div>
     </Layout>
   );

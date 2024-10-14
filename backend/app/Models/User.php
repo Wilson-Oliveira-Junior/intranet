@@ -20,6 +20,7 @@ class User extends Authenticatable // Pode implementar MustVerifyEmail se necess
         'name',
         'email',
         'password',
+        'team', // Adicione o campo de equipe aqui
     ];
 
     /**
@@ -41,4 +42,11 @@ class User extends Authenticatable // Pode implementar MustVerifyEmail se necess
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // Defina relacionamentos, se necessário
+    // Exemplo:
+    // public function tasks()
+    // {
+    //     return $this->hasMany(Task::class);
+    // }
 }
