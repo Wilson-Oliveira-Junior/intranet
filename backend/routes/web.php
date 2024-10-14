@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -50,4 +51,16 @@ Route::middleware('api')->group(function () {
 
     // Rotas para GUT
     Route::get('/GUT', [GutController::class, 'index']);
+
+    // Rotas para Times
+    Route::get('/times', function () {
+        return App\Models\Time::all(); // Retorna todos os times
+    });
+
+    // Rotas para Membros
+    Route::get('/members', function (Request $request) {
+        $team = $request->query('team');
+        return App\Models\User::where('team', $team)->get();
+    });
 });
+

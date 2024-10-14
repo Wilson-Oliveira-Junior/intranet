@@ -7,23 +7,41 @@ import axios from 'axios';
 const GutPage = () => {
   const [team, setTeam] = useState('Desenvolvimento');
   const [members, setMembers] = useState([]);
+  const [teams, setTeams] = useState([]);
   const [selectedMember, setSelectedMember] = useState('');
   const [tasks, setTasks] = useState([]);
 
   const handleTeamChange = async (e) => {
     const selectedTeam = e.target.value;
     setTeam(selectedTeam);
-    setSelectedMember(''); 
+    setSelectedMember('');
     await fetchTeamMembers(selectedTeam);
-    handleUpdateList(); 
+    handleUpdateList();
+  };
+
+  const fetchTeams = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/times');
+      if (!response.ok) {
+        throw new Error(`Erro na rede: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setTeams(data);
+    } catch (error) {
+      console.error('Erro ao buscar os times:', error);
+    }
   };
 
   const fetchTeamMembers = async (team) => {
-    
-    const response = await fetch(`http://127.0.0.1:8000/members?team=${team}`);
-    const data = await response.json();
-    setMembers(data.membros);
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/usuarios?team_id=${team}`);
+      const data = await response.json();
+      setMembers(data);
+    } catch (error) {
+      console.error('Erro ao buscar os membros do time:', error);
+    }
   };
+
 
   const handleMemberChange = (e) => {
     setSelectedMember(e.target.value);
@@ -43,8 +61,9 @@ const GutPage = () => {
   };
 
   useEffect(() => {
+    fetchTeams();
     handleUpdateList();
-    fetchTeamMembers(team); 
+    fetchTeamMembers(team);
   }, [team]);
 
   const filteredTasks = selectedMember
@@ -59,17 +78,18 @@ const GutPage = () => {
         </header>
         <div className="container">
           <div className="filter-section mb-4">
-            <select 
-              className="filter-select" 
-              value={team} 
+            <select
+              className="filter-select"
+              value={team}
               onChange={handleTeamChange}
             >
-              <option value="Desenvolvimento">Desenvolvimento</option>
-              
+              {teams.map((team) => (
+                <option key={team.id} value={team.nome}>{team.nome}</option>
+              ))}
             </select>
-            <select 
-              className="filter-select" 
-              value={selectedMember} 
+            <select
+              className="filter-select"
+              value={selectedMember}
               onChange={handleMemberChange}
             >
               <option value="">Todos os Membros</option>
@@ -77,9 +97,9 @@ const GutPage = () => {
                 <option key={member.id} value={member.nome}>{member.nome}</option>
               ))}
             </select>
-            <button 
+            <button
               className="update-button"
-              onClick={handleUpdateList} 
+              onClick={handleUpdateList}
             >
               Atualizar Listagem
             </button>
@@ -121,11 +141,11 @@ const GutPage = () => {
                   <td className="table-cell text-center">{item.dataTarefa}</td>
                   <td className="table-cell text-center">
                     <div className="flex items-center justify-center">
-                      <input 
-                        type="text" 
-                        className="date-input" 
-                        value={item.dataDesejada} 
-                        readOnly 
+                      <input
+                        type="text"
+                        className="date-input"
+                        value={item.dataDesejada}
+                        readOnly
                       />
                       <FaSyncAlt className="icon" />
                       <FaCalendarAlt className="icon" />

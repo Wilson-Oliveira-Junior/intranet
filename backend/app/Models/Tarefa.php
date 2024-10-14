@@ -10,7 +10,7 @@ class Tarefa extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * Os atributos que podem ser preenchidos em massa.
      *
      * @var array<int, string>
      */
@@ -21,6 +21,7 @@ class Tarefa extends Model
         'data_inicio',
         'data_fim',
         'cronograma_id', // Para associar a tarefa a um cronograma
+        'user_id', // Adicionado para associar a tarefa a um usuário
     ];
 
     /**
@@ -29,5 +30,11 @@ class Tarefa extends Model
     public function cronograma()
     {
         return $this->belongsTo(Cronograma::class);
+    }
+
+    // Relacionamento com User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

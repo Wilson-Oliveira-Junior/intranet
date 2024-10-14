@@ -12,7 +12,7 @@ class User extends Authenticatable // Pode implementar MustVerifyEmail se necess
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Os atributos que podem ser preenchidos em massa.
      *
      * @var array<int, string>
      */
@@ -20,11 +20,11 @@ class User extends Authenticatable // Pode implementar MustVerifyEmail se necess
         'name',
         'email',
         'password',
-        'team', // Adicione o campo de equipe aqui
+        'time_id', // Renomeei para time_id para seguir a convenção
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Os atributos que devem ser ocultados durante a serialização.
      *
      * @var array<int, string>
      */
@@ -34,7 +34,7 @@ class User extends Authenticatable // Pode implementar MustVerifyEmail se necess
     ];
 
     /**
-     * The attributes that should be cast.
+     * Os atributos que devem ser convertidos.
      *
      * @var array<string, string>
      */
@@ -43,10 +43,15 @@ class User extends Authenticatable // Pode implementar MustVerifyEmail se necess
         'password' => 'hashed',
     ];
 
-    // Defina relacionamentos, se necessário
-    // Exemplo:
-    // public function tasks()
-    // {
-    //     return $this->hasMany(Task::class);
-    // }
+    // Relacionamento com Time
+    public function time()
+    {
+        return $this->belongsTo(Time::class);
+    }
+
+    // Relacionamento com Tarefa
+    public function tarefas()
+    {
+        return $this->hasMany(Tarefa::class);
+    }
 }
