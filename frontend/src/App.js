@@ -1,6 +1,9 @@
+// src/App.js
 import React from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'; // Mover o Router para envolver a aplicação
+import { AuthProvider } from './context/AuthContext'; // Importando o AuthProvider
+import Sidebar from './components/Sidebar';
 import HomePage from './pages/HomePage';
 import UserPage from './pages/UserPage';
 import EmailVerification from './pages/EmailVerification'; 
@@ -12,9 +15,17 @@ import CronogramaUsuarios from './pages/CronogramaUsuarios';
 import Tarefas from './pages/Tarefas';
 import GutPage from './pages/GutPage'; 
 
-const App = () => {
+const AppContent = () => {
+  const location = useLocation(); // Obtenha a rota atual
+
+  // Rotas onde o Sidebar não deve aparecer
+  const noSidebarRoutes = ['/login', '/register'];
+
   return (
-    <Router>
+    <>
+      {/* Exibe o sidebar apenas se a rota atual NÃO estiver em noSidebarRoutes */}
+      {!noSidebarRoutes.includes(location.pathname) && <Sidebar />}
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/users" element={<UserPage />} />
@@ -25,9 +36,19 @@ const App = () => {
         <Route path="/cronograma" element={<Cronograma />} />
         <Route path="/cronograma-usuarios" element={<CronogramaUsuarios />} /> 
         <Route path="/tarefas" element={<Tarefas />} />
-        <Route path="/GUT" element={<GutPage />} /> {/* Certifique-se de que esta rota está definida */}
+        <Route path="/GUT" element={<GutPage />} />
       </Routes>
-    </Router>
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
   );
 };
 

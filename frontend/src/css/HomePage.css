@@ -1,6 +1,6 @@
 .home-container {
     display: flex;
-    height: auto; /* Mantém a altura automática para ajustar o conteúdo */
+
 }
 
 .container {
@@ -11,6 +11,7 @@
     margin: 10px; /* Margens uniformes */
     border-radius: 8px; /* Bordas arredondadas */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para profundidade */
+    display: flex;
 }
 
 .header {

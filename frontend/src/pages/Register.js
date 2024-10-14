@@ -1,133 +1,151 @@
-// src/components/Register.js
-
 import React, { useState } from 'react';
 import axios from 'axios';
+import '../css/Register.css';
+import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+    const { login } = useAuth(); 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const [errors, setErrors] = useState({});
+    const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrors({}); // Limpar erros anteriores
+        setErrors({});
+        setSuccessMessage('');
+
+        // Verifica se as senhas coincidem
+        if (password !== passwordConfirmation) {
+            setErrors({ passwordConfirmation: ['As senhas não correspondem.'] });
+            return;
+        }
 
         try {
-            const response = await axios.post('/api/register', {
+            // Faz a requisição para o backend
+            const response = await axios.post('http://localhost:8000/api/register', {
                 name,
                 email,
                 password,
                 password_confirmation: passwordConfirmation,
             });
 
-            // Se o registro for bem-sucedido, redirecionar para a página desejada
+            console.log('Registro bem-sucedido:', response.data); // Adiciona log para sucesso
+
             if (response.status === 201) {
-                navigate('/login'); // Ou a rota que você deseja
+                // Faz login automático
+                await login(email, password); 
+
+                setSuccessMessage('Cadastro realizado com sucesso! Redirecionando para a página de login...');
+                setTimeout(() => {
+                    navigate('/login');
+                }, 2000);
             }
         } catch (error) {
-            if (error.response && error.response.status === 422) {
-                // Capturar erros de validação
-                setErrors(error.response.data.errors);
+            console.error('Erro ao registrar:', error); // Loga o erro para depuração
+            
+            if (error.response) {
+                // Se houver uma resposta do servidor
+                if (error.response.status === 422) {
+                    setErrors(error.response.data.errors);
+                } else {
+                    // Lidar com outros erros
+                    setErrors({ global: ['Ocorreu um erro inesperado. Tente novamente mais tarde.'] });
+                }
+            } else {
+                // Erros que não têm resposta do servidor
+                setErrors({ global: ['Não foi possível conectar ao servidor.'] });
             }
         }
     };
 
     return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-md-8">
-                    <div className="card">
-                        <div className="card-header">Register</div>
+        <div className="register-container">
+            <img src="/img/logo.png" alt="Logo" className="logo" />
+            <h2>Bem-Vindo!</h2>
+            <p>Seja Bem-vindo(a) à Intranet da Lógica Digital, um novo mundo apresentado a você!</p>
 
-                        <div className="card-body">
-                            <form onSubmit={handleSubmit}>
-                                <div className="form-group row">
-                                    <label htmlFor="name" className="col-md-4 col-form-label text-md-right">Name</label>
-                                    <div className="col-md-6">
-                                        <input
-                                            id="name"
-                                            type="text"
-                                            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-                                            value={name}
-                                            onChange={(e) => setName(e.target.value)}
-                                            required
-                                            autoFocus
-                                        />
-                                        {errors.name && (
-                                            <span className="invalid-feedback" role="alert">
-                                                <strong>{errors.name[0]}</strong>
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
+            <div className="form-container">
+                {successMessage && <div className="alert alert-success">{successMessage}</div>}
+                {errors.global && <div className="alert alert-danger">{errors.global[0]}</div>} {/* Mensagem de erro global */}
 
-                                <div className="form-group row">
-                                    <label htmlFor="email" className="col-md-4 col-form-label text-md-right">E-Mail Address</label>
-                                    <div className="col-md-6">
-                                        <input
-                                            id="email"
-                                            type="email"
-                                            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            required
-                                        />
-                                        {errors.email && (
-                                            <span className="invalid-feedback" role="alert">
-                                                <strong>{errors.email[0]}</strong>
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className="form-group row">
-                                    <label htmlFor="password" className="col-md-4 col-form-label text-md-right">Password</label>
-                                    <div className="col-md-6">
-                                        <input
-                                            id="password"
-                                            type="password"
-                                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            required
-                                        />
-                                        {errors.password && (
-                                            <span className="invalid-feedback" role="alert">
-                                                <strong>{errors.password[0]}</strong>
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className="form-group row">
-                                    <label htmlFor="password-confirm" className="col-md-4 col-form-label text-md-right">Confirm Password</label>
-                                    <div className="col-md-6">
-                                        <input
-                                            id="password-confirm"
-                                            type="password"
-                                            className="form-control"
-                                            value={passwordConfirmation}
-                                            onChange={(e) => setPasswordConfirmation(e.target.value)}
-                                            required
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="form-group row mb-0">
-                                    <div className="col-md-6 offset-md-4">
-                                        <button type="submit" className="btn btn-primary">
-                                            Register
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="name">Nome</label>
+                        <input
+                            id="name"
+                            type="text"
+                            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                        {errors.name && (
+                            <span className="invalid-feedback">
+                                <strong>{errors.name[0]}</strong>
+                            </span>
+                        )}
                     </div>
-                </div>
+
+                    <div className="form-group">
+                        <label htmlFor="email">E-Mail</label>
+                        <input
+                            id="email"
+                            type="email"
+                            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        {errors.email && (
+                            <span className="invalid-feedback">
+                                <strong>{errors.email[0]}</strong>
+                            </span>
+                        )}
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="password">Senha</label>
+                        <input
+                            id="password"
+                            type="password"
+                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        {errors.password && (
+                            <span className="invalid-feedback">
+                                <strong>{errors.password[0]}</strong>
+                            </span>
+                        )}
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="password-confirm">Confirmar Senha</label>
+                        <input
+                            id="password-confirm"
+                            type="password"
+                            className={`form-control ${errors.passwordConfirmation ? 'is-invalid' : ''}`}
+                            value={passwordConfirmation}
+                            onChange={(e) => setPasswordConfirmation(e.target.value)}
+                            required
+                        />
+                        {errors.passwordConfirmation && (
+                            <span className="invalid-feedback">
+                                <strong>{errors.passwordConfirmation[0]}</strong>
+                            </span>
+                        )}
+                    </div>
+
+                    <button type="submit" className="btn btn-primary">
+                        Registrar
+                    </button>
+                </form>
             </div>
         </div>
     );

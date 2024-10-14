@@ -1,8 +1,9 @@
 .cardash {
-  width: 150px; /* Ajuste conforme necessário */
-  height: 120px; /* Ajuste conforme necessário */
+  width: auto; /* Ajuste conforme necessário */
+  height: auto; /* Ajuste conforme necessário */
   margin-left: 20px;
   margin-right: 35px;
+  display: flex;
 }
 
 .card-value {

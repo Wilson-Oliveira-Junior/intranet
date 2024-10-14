@@ -1,18 +1,26 @@
+// src/pages/Login.js
 import React, { useState } from 'react';
 import '../css/Login.css'; // Certifique-se de que o caminho esteja correto
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { login } = useAuth(); // Contexto de autenticação
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8000/api/login', { email, password });
+            
+            const { token, user } = response.data; // Assumindo que você recebe um token e dados de usuário
+            localStorage.setItem('token', token); // Armazena o token no localStorage
+            login(user); // Salva o usuário no contexto
+            
             navigate('/dashboard'); // Redireciona após o login bem-sucedido
         } catch (err) {
             setError('Credenciais inválidas');
