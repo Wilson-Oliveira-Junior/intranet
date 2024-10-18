@@ -21,6 +21,12 @@ Route::get('/dashboard-data', function () {
     ]);
 });
 
+Route::get('/csrf-token', function () {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
+
+
+
 // Agrupando as rotas
 Route::middleware('api')->group(function () {
     // Rotas para autenticação

@@ -32,7 +32,7 @@ const Register = () => {
                 email,
                 password,
                 password_confirmation: passwordConfirmation,
-            });            
+            });
 
             console.log('Registro bem-sucedido:', response.data); // Adiciona log para sucesso
 

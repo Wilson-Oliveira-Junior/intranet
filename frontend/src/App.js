@@ -1,8 +1,7 @@
-// src/App.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'; // Mover o Router para envolver a aplicação
-import { AuthProvider } from './context/AuthContext'; // Importando o AuthProvider
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'; 
+import { AuthProvider } from './context/AuthContext'; 
 import Sidebar from './components/Sidebar';
 import HomePage from './pages/HomePage';
 import UserPage from './pages/UserPage';
@@ -14,16 +13,37 @@ import Cronograma from './pages/Cronograma';
 import CronogramaUsuarios from './pages/CronogramaUsuarios';
 import Tarefas from './pages/Tarefas';
 import GutPage from './pages/GutPage'; 
+import axios from 'axios'; 
+
+const App = () => {
+  useEffect(() => {
+    const configureAxios = () => {
+      axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+      const csrfMetaTag = document.querySelector('meta[name="csrf-token"]');
+      const token = csrfMetaTag ? csrfMetaTag.getAttribute('content') : '';
+      axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
+    };
+
+    configureAxios();
+  }, []);
+
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
+  );
+};
 
 const AppContent = () => {
-  const location = useLocation(); // Obtenha a rota atual
+  const location = useLocation(); 
 
-  // Rotas onde o Sidebar não deve aparecer
+  
   const noSidebarRoutes = ['/login', '/register'];
 
   return (
     <>
-      {/* Exibe o sidebar apenas se a rota atual NÃO estiver em noSidebarRoutes */}
       {!noSidebarRoutes.includes(location.pathname) && <Sidebar />}
 
       <Routes>
@@ -39,16 +59,6 @@ const AppContent = () => {
         <Route path="/GUT" element={<GutPage />} />
       </Routes>
     </>
-  );
-};
-
-const App = () => {
-  return (
-    <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </AuthProvider>
   );
 };
 
