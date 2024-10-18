@@ -80,7 +80,7 @@ trait AuthenticatesUsers
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'is_admin' => $user->is_admin // Inclui o campo is_admin
+                'is_admin' => $user->is_admin, // Inclui o campo is_admin
             ]
         ]);
     }

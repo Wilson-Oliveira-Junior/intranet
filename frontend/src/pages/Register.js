@@ -27,12 +27,12 @@ const Register = () => {
 
         try {
             // Faz a requisição para o backend
-            const response = await axios.post('http://localhost:8000/api/register', {
+            const response = await axios.post('http://localhost:8000/register', {
                 name,
                 email,
                 password,
                 password_confirmation: passwordConfirmation,
-            });
+            });            
 
             console.log('Registro bem-sucedido:', response.data); // Adiciona log para sucesso
 

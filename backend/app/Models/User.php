@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail; // Ative se for usar verificação de e-mail
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable // Pode implementar MustVerifyEmail se necessário
+class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
@@ -20,7 +20,8 @@ class User extends Authenticatable // Pode implementar MustVerifyEmail se necess
         'name',
         'email',
         'password',
-        'time_id', // Renomeei para time_id para seguir a convenção
+        'image', // Certifique-se de que o campo 'image' existe na tabela
+        'time_id', // Campo adicionado conforme necessário
     ];
 
     /**
