@@ -38,4 +38,23 @@ class LoginController extends Controller
             ]
         ]);
     }
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        if (!$token = Auth::attempt($validator->validated())) {
+            return response()->json([
+                'error' => 'Unauthorized',
+            ], 401);
+        }
+
+        return $this->createNewToken($token);
+    }
 }

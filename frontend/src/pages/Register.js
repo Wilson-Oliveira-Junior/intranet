@@ -1,68 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie'; 
 import '../css/Register.css';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-    const { login } = useAuth(); 
+    const { login } = useAuth();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+
+    const fetchCsrfToken = async () => {
+        try {
+            await axios.get('http://localhost:8000/sanctum/csrf-cookie'); 
+            const csrfToken = Cookies.get('XSRF-TOKEN'); 
+        } catch (error) {
+            console.error("Erro ao obter o CSRF token:", error);
+        }
+        
+    };
+    
+    useEffect(() => {
+        fetchCsrfToken();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors({});
         setSuccessMessage('');
-
-        // Verifica se as senhas coincidem
+        setIsSubmitting(true);
+    
         if (password !== passwordConfirmation) {
             setErrors({ passwordConfirmation: ['As senhas não correspondem.'] });
+            setIsSubmitting(false);
             return;
         }
-
+    
+        const csrfToken = Cookies.get('XSRF-TOKEN'); 
+    
         try {
-            // Faz a requisição para o backend
-            const response = await axios.post('http://localhost:8000/register', {
+            const response = await axios.post('http://localhost:8000/register', { 
                 name,
                 email,
                 password,
                 password_confirmation: passwordConfirmation,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken, 
+                },
+                withCredentials: true, 
             });
-
-            console.log('Registro bem-sucedido:', response.data); // Adiciona log para sucesso
-
+    
             if (response.status === 201) {
-                // Faz login automático
-                await login(email, password); 
-
+                await login(email, password);
                 setSuccessMessage('Cadastro realizado com sucesso! Redirecionando para a página de login...');
                 setTimeout(() => {
                     navigate('/login');
                 }, 2000);
             }
         } catch (error) {
-            console.error('Erro ao registrar:', error); // Loga o erro para depuração
-            
+            console.error('Erro ao registrar:', error);
             if (error.response) {
-                // Se houver uma resposta do servidor
+                console.error('Erro detalhado:', error.response.data); // Log detalhado do erro
                 if (error.response.status === 422) {
                     setErrors(error.response.data.errors);
                 } else {
-                    // Lidar com outros erros
                     setErrors({ global: ['Ocorreu um erro inesperado. Tente novamente mais tarde.'] });
                 }
             } else {
-                // Erros que não têm resposta do servidor
                 setErrors({ global: ['Não foi possível conectar ao servidor.'] });
             }
+        } finally {
+            setIsSubmitting(false);
         }
     };
-
+    
     return (
         <div className="register-container">
             <img src="/img/logo.png" alt="Logo" className="logo" />
@@ -71,7 +90,7 @@ const Register = () => {
 
             <div className="form-container">
                 {successMessage && <div className="alert alert-success">{successMessage}</div>}
-                {errors.global && <div className="alert alert-danger">{errors.global[0]}</div>} {/* Mensagem de erro global */}
+                {errors.global && <div className="alert alert-danger">{errors.global[0]}</div>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
@@ -142,8 +161,8 @@ const Register = () => {
                         )}
                     </div>
 
-                    <button type="submit" className="btn btn-primary">
-                        Registrar
+                    <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                        {isSubmitting ? 'Registrando...' : 'Registrar'}
                     </button>
                 </form>
             </div>

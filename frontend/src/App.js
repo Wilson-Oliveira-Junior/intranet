@@ -13,19 +13,17 @@ import Cronograma from './pages/Cronograma';
 import CronogramaUsuarios from './pages/CronogramaUsuarios';
 import Tarefas from './pages/Tarefas';
 import GutPage from './pages/GutPage'; 
+import authVerify from './api/token';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; 
 
-const App = () => {
+function App() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
-    const configureAxios = () => {
-      axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-      const csrfMetaTag = document.querySelector('meta[name="csrf-token"]');
-      const token = csrfMetaTag ? csrfMetaTag.getAttribute('content') : '';
-      axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
-    };
-
-    configureAxios();
-  }, []);
+    authVerify(dispatch, logout, navigate);
+  }, [navigate, dispatch]);
 
   return (
     <AuthProvider>
@@ -39,13 +37,15 @@ const App = () => {
 const AppContent = () => {
   const location = useLocation(); 
 
-  
+  // Definir rotas que não mostram a sidebar
   const noSidebarRoutes = ['/login', '/register'];
 
   return (
     <>
+      {/* Renderiza a sidebar se a rota não estiver em noSidebarRoutes */}
       {!noSidebarRoutes.includes(location.pathname) && <Sidebar />}
 
+      {/* Definição de rotas do React */}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/users" element={<UserPage />} />

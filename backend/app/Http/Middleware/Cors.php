@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -8,9 +9,10 @@ class Cors
     public function handle($request, Closure $next)
     {
         $headers = [
-            'Access-Control-Allow-Origin'      => '*',
-            'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE', // Os métodos que você deseja permitir
-            'Access-Control-Allow-Headers'     => 'Content-Type, Accept, Authorization, X-Requested-With',
+            'Access-Control-Allow-Origin' => 'http://localhost:3000', // Especifique a origem
+            'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS',
+            'Access-Control-Allow-Headers' => 'Content-Type, Accept, Authorization, X-Requested-With',
+            'Access-Control-Allow-Credentials' => 'true', // Adicionada
         ];
 
         if ($request->isMethod('OPTIONS')) {
@@ -26,4 +28,3 @@ class Cors
         return $response;
     }
 }
-

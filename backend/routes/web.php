@@ -1,38 +1,27 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\TarefaController;
 use App\Http\Controllers\GutController;
+use App\Http\Controllers\CsrfCookieController;
 use App\Models\Time;
 use App\Models\User;
 
-// Rota para dados do dashboard
-Route::get('/dashboard-data', function () {
-    return response()->json([
-        'quadro1' => 0,
-        'quadro2' => 0,
-        'quadro3' => 15,
-        'quadro4' => 321,
-    ]);
-});
+// Rota para obter o CSRF Cookie
+Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'getCookie']);
 
-Route::get('/csrf-token', function () {
-    return response()->json(['csrf_token' => csrf_token()]);
-});
+// Rotas públicas
+Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/login', [LoginController::class, 'login']);
 
-
-
-// Agrupando as rotas
-Route::middleware('api')->group(function () {
-    // Rotas para autenticação
-    Route::post('/login', [LoginController::class, 'login']);
+// Agrupando as rotas protegidas por autenticação e middleware 'auth:sanctum'
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Rotas de logout
     Route::post('/logout', [LoginController::class, 'logout']);
-    Route::post('/register', [RegisterController::class, 'register']);
 
     // Rotas para usuários
     Route::get('/usuarios', [UserController::class, 'index']);
@@ -62,12 +51,12 @@ Route::middleware('api')->group(function () {
 
     // Rotas para Times
     Route::get('/times', function () {
-        return Time::all(); // Retorna todos os times
+        return Time::all();
     });
 
     // Rotas para Membros
     Route::get('/members', function (Request $request) {
         $team = $request->query('team');
-        return User::where('team', $team)->get(); // Busca membros pelo time
+        return User::where('team', $team)->get();
     });
 });
