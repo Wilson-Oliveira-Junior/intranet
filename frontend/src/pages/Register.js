@@ -19,11 +19,9 @@ const Register = () => {
     const fetchCsrfToken = async () => {
         try {
             await axios.get('http://localhost:8000/sanctum/csrf-cookie'); 
-            const csrfToken = Cookies.get('XSRF-TOKEN'); 
         } catch (error) {
             console.error("Erro ao obter o CSRF token:", error);
         }
-        
     };
     
     useEffect(() => {
@@ -53,11 +51,14 @@ const Register = () => {
             }, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken, 
+                    'X-CSRF-TOKEN': csrfToken,
                 },
-                withCredentials: true, 
+                withCredentials: true,
             });
-    
+
+            // Mova o console.log aqui
+            console.log(response.data);
+
             if (response.status === 201) {
                 await login(email, password);
                 setSuccessMessage('Cadastro realizado com sucesso! Redirecionando para a página de login...');
@@ -68,7 +69,7 @@ const Register = () => {
         } catch (error) {
             console.error('Erro ao registrar:', error);
             if (error.response) {
-                console.error('Erro detalhado:', error.response.data); // Log detalhado do erro
+                console.error('Erro detalhado:', error.response.data); 
                 if (error.response.status === 422) {
                     setErrors(error.response.data.errors);
                 } else {

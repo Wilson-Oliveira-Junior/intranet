@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+// src/App.js
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'; 
+import { Provider } from 'react-redux'; // Importando o Provider
+import store from './store'; // Importando o store
 import { AuthProvider } from './context/AuthContext'; 
 import Sidebar from './components/Sidebar';
 import HomePage from './pages/HomePage';
@@ -16,36 +18,15 @@ import GutPage from './pages/GutPage';
 import authVerify from './api/token';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; 
-
-function App() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  useEffect(() => {
-    authVerify(dispatch, logout, navigate);
-  }, [navigate, dispatch]);
-
-  return (
-    <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </AuthProvider>
-  );
-};
+import { logout } from './actions/authActions'; 
 
 const AppContent = () => {
   const location = useLocation(); 
-
-  // Definir rotas que não mostram a sidebar
   const noSidebarRoutes = ['/login', '/register'];
 
   return (
     <>
-      {/* Renderiza a sidebar se a rota não estiver em noSidebarRoutes */}
       {!noSidebarRoutes.includes(location.pathname) && <Sidebar />}
-
-      {/* Definição de rotas do React */}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/users" element={<UserPage />} />
@@ -61,5 +42,29 @@ const AppContent = () => {
     </>
   );
 };
+
+const AuthCheck = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    authVerify(dispatch, logout, navigate);
+  }, [navigate, dispatch]);
+
+  return null; 
+};
+
+function App() {
+  return (
+    <AuthProvider>
+      <Provider store={store}> 
+        <Router>
+          <AuthCheck /> 
+          <AppContent />
+        </Router>
+      </Provider>
+    </AuthProvider>
+  );
+}
 
 export default App;
