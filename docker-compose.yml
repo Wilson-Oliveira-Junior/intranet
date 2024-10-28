@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: mysql:5.7
@@ -9,6 +11,8 @@ services:
       MYSQL_PASSWORD: password
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - novaintranet_network  
 
   laravel:
     build:
@@ -18,9 +22,7 @@ services:
     depends_on:
       - db
     networks:
-      - backend
-    expose:
-      - "9000"
+      - novaintranet_network  
 
   nginx:
     image: nginx:alpine
@@ -32,7 +34,7 @@ services:
     depends_on:
       - laravel
     networks:
-      - backend
+      - novaintranet_network  
 
   react:
     build:
@@ -42,11 +44,10 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - frontend
+      - novaintranet_network  
 
 networks:
-  backend:
-  frontend:
+  novaintranet_network:  
 
 volumes:
-  db_data:
+  db_data:  

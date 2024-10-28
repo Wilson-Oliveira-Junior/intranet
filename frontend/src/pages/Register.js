@@ -56,7 +56,7 @@ const Register = () => {
                 withCredentials: true,
             });
 
-            // Mova o console.log aqui
+        
             console.log(response.data);
 
             if (response.status === 201) {
@@ -76,7 +76,7 @@ const Register = () => {
                     setErrors({ global: ['Ocorreu um erro inesperado. Tente novamente mais tarde.'] });
                 }
             } else {
-                setErrors({ global: ['Não foi possível conectar ao servidor.'] });
+                setErrors({ global: ['Erro diverso'] });
             }
         } finally {
             setIsSubmitting(false);
